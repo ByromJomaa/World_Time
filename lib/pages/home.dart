@@ -7,16 +7,40 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
+  // The time data
   Map data = {};
+
+  // Helper method to open the choose_location page
+  void openChooseLocationPage() async {
+    // Show the loading screen
+    await Navigator.pushNamed(context, "/page_loading", arguments: {
+      "time": 220,
+    });
+
+    // Open the choose_location page and get the user's choice
+    dynamic result = await Navigator.pushNamed(context, "/location");
+    setState(() {
+      data = {
+        "time": result["time"],
+        "location": result["location"],
+        "isDaytime": result["isDaytime"],
+        "flag": result["flag"]
+      };
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
 
     data = data.isNotEmpty ? data : ModalRoute.of(context).settings.arguments;
 
-    // Set background
+    // Set background data
     String bgImage = data["isDaytime"] ? "day.png" : "night.png";
     Color bgColor = data["isDaytime"] ? Colors.blue : Colors.indigo[700];
+
+    // Set edit location button data
+    Color edtLocButtonColor = data["isDaytime"] ? Colors.grey[100] : const Color(0xff000056);
+    Color edtLocTextIconColor = data["isDaytime"] ? Colors.grey[900] : Colors.grey[300];
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -32,30 +56,22 @@ class _HomeState extends State<Home> {
             padding: const EdgeInsets.fromLTRB(0, 120, 0, 0),
             child: Column(
               children: <Widget>[
-                FlatButton.icon(
-                    onPressed: () async {
-                      dynamic result = await Navigator.pushNamed(context, "/location");
-                      setState(() {
-                        data = {
-                          "time": result["time"],
-                          "location": result["location"],
-                          "isDaytime": result["isDaytime"],
-                          "flag": result["flag"]
-                        };
-                      });
-                    },
+                RaisedButton.icon(
+                    onPressed: openChooseLocationPage,
                     icon: Icon(
                         Icons.edit_location,
-                        color: Colors.grey[300],
+                        color: edtLocTextIconColor,
                     ),
                     label: Text(
                         "Edit Location",
                         style: TextStyle(
-                          color: Colors.grey[300],
+                          color: edtLocTextIconColor,
+                          fontSize: 20,
                         ),
-                    )
+                    ),
+                  color: edtLocButtonColor,
                 ),
-                SizedBox(height: 20,),
+                SizedBox(height: 40,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
