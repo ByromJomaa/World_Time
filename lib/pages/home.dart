@@ -30,16 +30,29 @@ class _HomeState extends State<Home> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    precacheImage(AssetImage("assets/day.jpg"), context);
+    precacheImage(AssetImage("assets/night.jpg"), context);
+  }
+
+  @override
   Widget build(BuildContext context) {
 
     data = data.isNotEmpty ? data : ModalRoute.of(context).settings.arguments;
 
     // Set background data
-    String bgImage = data["isDaytime"] ? "day.png" : "night.png";
-    Color bgColor = data["isDaytime"] ? Colors.blue : Colors.indigo[700];
+    String bgImage = data["isDaytime"] ? "day.jpg" : "night.jpg";
+    Color bgColor = data["isDaytime"] ? Colors.blue[900] : Colors.grey[900];
 
-    // Set edit location button data
-    Color edtLocButtonColor = data["isDaytime"] ? Colors.grey[100] : const Color(0xff000056);
+    // Set edit location button data  const Color(0xff000056)
+    Color edtLocButtonColor = data["isDaytime"] ? Colors.grey[100] : Colors.grey[850];
     Color edtLocTextIconColor = data["isDaytime"] ? Colors.grey[900] : Colors.grey[300];
 
     return Scaffold(
