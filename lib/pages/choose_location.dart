@@ -24,6 +24,11 @@ class _ChooseLocationState extends State<ChooseLocation> {
     WorldTime instance = locations[index];
     await instance.getTime();
 
+    // Show the loading screen
+    await Navigator.pushNamed(context, "/page_loading", arguments: {
+      "time": 300,
+    });
+
     // Navigate to home screen
     Navigator.pop(context, {
       "location": instance.location,
