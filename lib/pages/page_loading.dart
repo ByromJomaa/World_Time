@@ -18,7 +18,7 @@ class _PageLoadingState extends State<PageLoading> {
       });
     }
     else {
-      await Future.delayed(const Duration(milliseconds: 320), () async {
+      await Future.delayed(const Duration(milliseconds: 220), () async {
         Navigator.pop(context);
       });
     }
