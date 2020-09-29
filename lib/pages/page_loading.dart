@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:world_time/services/world_time.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class PageLoading extends StatefulWidget {
@@ -9,9 +8,8 @@ class PageLoading extends StatefulWidget {
 
 class _PageLoadingState extends State<PageLoading> {
 
-  Map data;
-  int time = 300;
-
+  Map data;        // Data pushed to this page
+  int time = 300;  // Time to keep the loading screen open
 
   void popPage() async {
    if (time == 220) {
