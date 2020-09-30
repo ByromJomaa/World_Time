@@ -55,6 +55,12 @@ class _HomeState extends State<Home> {
     Color edtLocButtonColor = data["isDaytime"] ? Colors.grey[100] : Colors.grey[850];
     Color edtLocTextIconColor = data["isDaytime"] ? Colors.grey[900] : Colors.grey[300];
 
+    // Distance between edit loc button & time
+    double edtLocTimeDistance = data["isDaytime"] ? 90 : 40;
+
+    // Top padding
+    double topPadding = data["isDaytime"] ? 120 : 20;
+
     return Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
@@ -66,39 +72,44 @@ class _HomeState extends State<Home> {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 120, 0, 0),
+            padding: const EdgeInsets.fromLTRB(0, 80, 0, 0),
             child: Column(
               children: <Widget>[
+                SizedBox(height: 20,),
                 RaisedButton.icon(
                     onPressed: openChooseLocationPage,
+                    elevation: 5,
                     icon: Icon(
                         Icons.edit_location,
                         color: edtLocTextIconColor,
                     ),
-                    label: Text(
-                        "Edit Location",
-                        style: TextStyle(
-                          color: edtLocTextIconColor,
-                          fontSize: 20,
-                        ),
+                    label: Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: Text(
+                          "Edit Location",
+                          style: TextStyle(
+                            color: edtLocTextIconColor,
+                            fontSize: 23,
+                          ),
+                      ),
                     ),
                   color: edtLocButtonColor,
                 ),
-                SizedBox(height: 40,),
+                SizedBox(height: edtLocTimeDistance,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
                       data["location"],
                       style: TextStyle(
-                        fontSize: 28,
+                        fontSize: 35,
                         letterSpacing: 2,
                         color: Colors.white,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 20,),
+                SizedBox(height: 10,),
                 Text(
                   data["time"],
                   style: TextStyle(
