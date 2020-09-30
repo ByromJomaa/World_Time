@@ -24,7 +24,5 @@ void main() {
   ));
 }
 
-
-
 // Day: <span>Photo by <a href="https://unsplash.com/@olly_allars?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">olly allars</a> on <a href="https://unsplash.com/s/photos/day-sky?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
 // Night: <span>Photo by <a href="https://unsplash.com/@sanderdw?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Sander Dewerte</a> on <a href="https://unsplash.com/s/photos/night?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
