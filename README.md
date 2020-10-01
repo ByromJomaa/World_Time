@@ -2,4 +2,4 @@
 
 A mobile app that can display the current time in multiple user selectable cities around the globe. 
 
-![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
+![Screenshot of World Time App](https://github.com/ByromJomaa/World_Time/blob/master/README_screenshot.jpg)
