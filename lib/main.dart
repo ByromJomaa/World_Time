@@ -20,6 +20,7 @@ void main() {
       "/home": (context) => Home(),
       "/location": (context) => ChooseLocation(),
       "/page_loading": (context) => PageLoading(),
+      "/loading": (context) => Loading(),
     },
   ));
 }
