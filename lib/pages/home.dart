@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:world_time/services/world_time.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -9,13 +12,16 @@ class _HomeState extends State<Home> {
 
   // The time data
   Map data = {};
+  Map newData = {};
+
+  final RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   // Helper method to open the choose_location page
   void openChooseLocationPage() async {
     // Show the loading screen
-    await Navigator.pushNamed(context, "/page_loading", arguments: {
-      "time": 220,
-    });
+    // await Navigator.pushNamed(context, "/page_loading", arguments: {
+    //   "time": 220,
+    // });
 
     // Open the choose_location page and get the user's choice
     dynamic result = await Navigator.pushNamed(context, "/location");
@@ -42,6 +48,36 @@ class _HomeState extends State<Home> {
     precacheImage(AssetImage("assets/night.jpg"), context);
   }
 
+  void _onRefresh() async {
+    // newData = {
+    //   "url": data["url"],
+    //   "location": data["location"],
+    //   "flag": data["flag"]
+    // };
+    //
+    // WorldTime instance = WorldTime(url: newData["url"], location: newData["location"], flag: newData["flag"]);
+    // await Future.delayed(Duration(seconds: 1));
+    // await instance.getTime();
+    //
+    // data["time"] = newData["time"];
+    // data["isDaytime"] = newData["isDaytime"];
+
+    // Open the choose_location page and get the user's choice
+    await Navigator.pushNamed(context, "/loading");
+
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    // monitor network fetch
+    //await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    if(mounted)
+    print("hello 2");
+    _refreshController.loadComplete();
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -64,60 +100,91 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/$bgImage"),
-              fit: BoxFit.cover,
+        child: SmartRefresher(
+          enablePullDown: true,
+          header: WaterDropHeader(),
+          // footer: CustomFooter(
+          //   builder: (BuildContext context, LoadStatus mode) {
+          //     Widget body;
+          //     if(mode==LoadStatus.idle){
+          //       body = Text("pull up load");
+          //     }
+          //     else if(mode==LoadStatus.loading){
+          //       body = CupertinoActivityIndicator();
+          //     }
+          //     else if(mode == LoadStatus.failed){
+          //       body = Text("Load Failed!Click retry!");
+          //     }
+          //     else if(mode == LoadStatus.canLoading){
+          //       body = Text("release to load more");
+          //     }
+          //     else{
+          //       body = Text("No more Data");
+          //     }
+          //     return Container(
+          //       height: 55.0,
+          //       child: Center(child:body),
+          //     );
+          //   },
+          // ),
+          controller: _refreshController,
+          onRefresh: _onRefresh,
+          onLoading: _onLoading,
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/$bgImage"),
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 80, 0, 0),
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 20,),
-                RaisedButton.icon(
-                    onPressed: openChooseLocationPage,
-                    elevation: 5,
-                    icon: Icon(
-                        Icons.edit_location,
-                        color: edtLocTextIconColor,
-                    ),
-                    label: Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Text(
-                          "Edit Location",
-                          style: TextStyle(
-                            color: edtLocTextIconColor,
-                            fontSize: 23,
-                          ),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 80, 0, 0),
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: 20,),
+                  RaisedButton.icon(
+                      onPressed: openChooseLocationPage,
+                      elevation: 5,
+                      icon: Icon(
+                          Icons.edit_location,
+                          color: edtLocTextIconColor,
                       ),
-                    ),
-                  color: edtLocButtonColor,
-                ),
-                SizedBox(height: edtLocTimeDistance,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      data["location"],
-                      style: TextStyle(
-                        fontSize: 35,
-                        letterSpacing: 2,
-                        color: Colors.white,
+                      label: Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: Text(
+                            "Edit Location",
+                            style: TextStyle(
+                              color: edtLocTextIconColor,
+                              fontSize: 23,
+                            ),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10,),
-                Text(
-                  data["time"],
-                  style: TextStyle(
-                    fontSize: 66,
-                    color: Colors.white,
+                    color: edtLocButtonColor,
                   ),
-                ),
-              ],
+                  SizedBox(height: edtLocTimeDistance,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        data["location"],
+                        style: TextStyle(
+                          fontSize: 35,
+                          letterSpacing: 2,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10,),
+                  Text(
+                    data["time"],
+                    style: TextStyle(
+                      fontSize: 66,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
